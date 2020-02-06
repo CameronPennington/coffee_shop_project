@@ -19,6 +19,12 @@ CORS(app)
 # db_drop_and_create_all()
 
 ## ROUTES
+@app.route('/authtest', methods=['GET'])
+@requires_auth
+def test_auth_flow(jwt):
+    print(jwt)
+    return 'Hello world'
+
 '''
 @TODO implement endpoint
     GET /drinks
