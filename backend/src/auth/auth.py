@@ -31,7 +31,19 @@ class AuthError(Exception):
     return the token part of the header
 '''
 def get_token_auth_header():
-   raise Exception('Not Implemented')
+#    raise Exception('Not Implemented')
+    if 'Authorization' not in request.headers:
+        raise Exception('Not authorized')
+
+    auth_header = request.headers['Authorization']
+    header_parts = auth_header.split(' ')
+
+    if len(header_parts) != 2:
+        raise Exception('Malformed authorization header')
+    elif header_parts[0].lower() != 'bearer':
+        raise Exception('Malformed authorization header')
+
+    return header_parts[1]
 
 '''
 @TODO implement check_permissions(permission, payload) method
