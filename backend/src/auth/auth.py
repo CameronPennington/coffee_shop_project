@@ -4,10 +4,10 @@ from functools import wraps
 from jose import jwt
 from urllib.request import urlopen
 
-
-AUTH0_DOMAIN = 'udacity-fsnd.auth0.com'
+#change to my coffee shop account
+AUTH0_DOMAIN = 'penncoffee.auth0.com'
 ALGORITHMS = ['RS256']
-API_AUDIENCE = 'dev'
+API_AUDIENCE = 'coffee'
 
 ## AuthError Exception
 '''
