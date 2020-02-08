@@ -72,6 +72,12 @@ def get_token_auth_header():
     return true otherwise
 '''
 def check_permissions(permission, payload):
+    payload_permissions = payload['permissions']
+    if permission in payload_permissions:
+        can_access = True
+    else:
+        can_access = False
+
     raise Exception('Not Implemented')
 
 '''
