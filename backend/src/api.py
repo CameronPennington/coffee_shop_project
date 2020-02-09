@@ -30,8 +30,10 @@ db_drop_and_create_all()
 '''
 @app.route('/drinks')
 def get_drinks():
-
-    return None
+    drinks = Drink.query.order_by('id').all()
+    return jsonify({
+        'drinks': drinks
+    })
 '''
 @TODO implement endpoint
     GET /drinks-detail
