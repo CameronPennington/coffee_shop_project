@@ -19,11 +19,6 @@ CORS(app)
 # db_drop_and_create_all()
 
 ## ROUTES
-@app.route('/authtest', methods=['GET'])
-@requires_auth
-def test_auth_flow(jwt):
-    print(jwt)
-    return 'Hello world'
 
 '''
 @TODO implement endpoint
@@ -33,8 +28,10 @@ def test_auth_flow(jwt):
     returns status code 200 and json {"success": True, "drinks": drinks} where drinks is the list of drinks
         or appropriate status code indicating reason for failure
 '''
+@app.route('/drinks')
+def get_drinks():
 
-
+    return None
 '''
 @TODO implement endpoint
     GET /drinks-detail
@@ -43,8 +40,11 @@ def test_auth_flow(jwt):
     returns status code 200 and json {"success": True, "drinks": drinks} where drinks is the list of drinks
         or appropriate status code indicating reason for failure
 '''
+@app.route('/drinks-detail')
+@requires_auth('get:drinks-detail')
+def get_drinks_detail():
 
-
+    return None
 '''
 @TODO implement endpoint
     POST /drinks
