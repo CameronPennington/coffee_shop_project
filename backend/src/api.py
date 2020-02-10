@@ -30,10 +30,14 @@ db_drop_and_create_all()
 '''
 @app.route('/drinks')
 def get_drinks():
-    drinks = Drink.query.order_by('id').all()
-    return jsonify({
-        'drinks': drinks
-    })
+    try:
+        if request.method != 'GET':
+            abort(405)
+
+        drinks = Drink.query.order_by('id').all()
+        return jsonify({
+            'drinks': drinks
+        })
 '''
 @TODO implement endpoint
     GET /drinks-detail
@@ -91,6 +95,27 @@ def create_drink(token):
 
 
 ## Error Handling
+
+
+
+@app.errorhandler(404)
+def not_found(error):
+    return jsonify({
+                    "success": False, 
+                    "error": 404,
+                    "message": "not found"
+                    }), 404
+
+
+@app.errorhandler(405)
+def not_allowed(error):
+    return jsonify({
+                    "success": False, 
+                    "error": 405,
+                    "message": "not allowed"
+                    }), 405
+
+
 '''
 Example error handling for unprocessable entity
 '''
