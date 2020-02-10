@@ -61,7 +61,7 @@ def get_drinks_detail(token):
 '''
 @app.route('/drinks', methods=['POST'])
 @requires_auth('post:drinks')
-def create_drink():
+def create_drink(token):
 
     return 'All good'
 
