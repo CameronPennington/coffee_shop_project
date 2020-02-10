@@ -3,12 +3,13 @@ from flask import Flask, request, jsonify, abort
 from sqlalchemy import exc
 import json
 from flask_cors import CORS
-
+from flask_sqlalchemy import SQLAlchemy
 from .database.models import db_drop_and_create_all, setup_db, Drink
 from .auth.auth import AuthError, requires_auth
 
 app = Flask(__name__)
 setup_db(app)
+db = SQLAlchemy()
 CORS(app)
 
 '''
@@ -28,16 +29,16 @@ db_drop_and_create_all()
     returns status code 200 and json {"success": True, "drinks": drinks} where drinks is the list of drinks
         or appropriate status code indicating reason for failure
 '''
-@app.route('/drinks')
-def get_drinks():
-    try:
-        if request.method != 'GET' and request.method != 'POST':
-            abort(405)
+# @app.route('/drinks')
+# def get_drinks():
+#     try:
+#         if request.method != 'GET' and request.method != 'POST':
+#             abort(405)
 
-        drinks = Drink.query.order_by('id').all()
-        return jsonify({
-            'drinks': drinks
-        })
+#         drinks = Drink.query.order_by('id').all()
+#         return jsonify({
+#             'drinks': drinks
+#         })
 '''
 @TODO implement endpoint
     GET /drinks-detail
@@ -75,10 +76,18 @@ def create_drink(token):
     try:
         if request.method != 'GET' and request.method != 'POST':
             abort(405)
-
+        req_data = request.get_json()
+        new_drink = Drink(
+            title = req_data['title'],
+            recipe = req_data['recipe']
+        )
+        db.session.add(new_drink)
+        db.session.commit()
     except:
+        db.session.rollback()
         abort(422)
     finally:
+        db.session.close()
         return 'All good'
 
 '''
