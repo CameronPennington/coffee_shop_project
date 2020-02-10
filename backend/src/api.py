@@ -31,7 +31,7 @@ db_drop_and_create_all()
 @app.route('/drinks')
 def get_drinks():
     try:
-        if request.method != 'GET':
+        if request.method != 'GET' and request.method != 'POST':
             abort(405)
 
         drinks = Drink.query.order_by('id').all()
@@ -49,11 +49,17 @@ def get_drinks():
 @app.route('/drinks-detail')
 @requires_auth('get:drinks-detail')
 def get_drinks_detail(token):
-    drinks = Drink.query.all()
-    return jsonify({
-        'success': True,
-        'drinks': [drink.long() for drink in drinks]
-    }), 200
+    try:
+        if request.method != 'GET':
+            abort(405)
+        drinks = Drink.query.all()
+    except:
+        abort(422)
+    finally:
+        return jsonify({
+            'success': True,
+            'drinks': [drink.long() for drink in drinks]
+        }), 200
 '''
 @TODO implement endpoint
     POST /drinks
@@ -66,8 +72,14 @@ def get_drinks_detail(token):
 @app.route('/drinks', methods=['POST'])
 @requires_auth('post:drinks')
 def create_drink(token):
+    try:
+        if request.method != 'GET' and request.method != 'POST':
+            abort(405)
 
-    return 'All good'
+    except:
+        abort(422)
+    finally:
+        return 'All good'
 
 '''
 @TODO implement endpoint
