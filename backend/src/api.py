@@ -82,10 +82,15 @@ def create_drink(token):
         if request.method != 'GET' and request.method != 'POST':
             abort(405)
         req_data = request.get_json()
+    
+        recipe = json.dumps(req_data['recipe'])
         new_drink = Drink(
             title = req_data['title'],
-            recipe = req_data['recipe']
+            recipe = recipe
         )
+        
+        drinks = []
+        drinks.append(new_drink.long())
         new_drink.insert()
     except:
         db.session.rollback()
@@ -93,8 +98,8 @@ def create_drink(token):
     finally:
         db.session.close()
         return jsonify({
-            'success': True
-            # 'drinks': 
+            'success': True,
+            'drinks': drinks
         }), 200
 
 '''
